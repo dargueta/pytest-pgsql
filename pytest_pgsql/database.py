@@ -483,6 +483,9 @@ class PostgreSQLTestDBBase(metaclass=abc.ABCMeta):
             exists_ok (bool):
                 Don't throw an exception if the schema exists already.
         """
+        if not schemas:
+            return
+
         check = 'IF NOT EXISTS' if exists_ok else ''
         quoted_names = [self.id_quoter.quote_schema(s) for s in schemas]
         query = ';'.join('CREATE SCHEMA %s %s' % (check, s) for s in quoted_names)
